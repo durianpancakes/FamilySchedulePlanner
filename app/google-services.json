@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "965911685713",
+    "project_id": "familyscheduleplanner",
+    "storage_bucket": "familyscheduleplanner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965911685713:android:7ed465e6000b40c5922670",
+        "android_client_info": {
+          "package_name": "com.durianpancakes.familyscheduleplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "965911685713-23o9cl71agcj6t6jkrc033et1d4gvh3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0amiMcZFnF99pF-CrkmYwHtIyB8QH-Nc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965911685713-23o9cl71agcj6t6jkrc033et1d4gvh3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
