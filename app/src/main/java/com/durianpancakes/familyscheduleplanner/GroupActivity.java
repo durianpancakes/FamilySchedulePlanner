@@ -2,30 +2,27 @@ package com.durianpancakes.familyscheduleplanner;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import com.durianpancakes.familyscheduleplanner.ui.calendar.CalendarFragment;
 import com.durianpancakes.familyscheduleplanner.ui.calendar.EventItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.viven.fragmentstatemanager.FragmentStateManager;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavArgument;
 import androidx.navigation.NavController;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class GroupActivity extends AppCompatActivity {
 
     private GroupManager groupManager;
     private ArrayList<EventItem> eventArrayList;
+    private AppBarConfiguration appBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +35,14 @@ public class GroupActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_calendar, R.id.navigation_dashboard, R.id.navigation_notifications)
+        appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_calendar, R.id.navigation_packages, R.id.navigation_settings)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_group);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(navView, navController);
+        
+
         NavArgument groupIdArg = new NavArgument.Builder().setDefaultValue(groupId).build();
         NavInflater navInflater = navController.getNavInflater();
         NavGraph navGraph = navInflater.inflate(R.navigation.group_navigation);
@@ -57,5 +58,12 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
         databaseHelper.getSpecificUserGroup(groupId);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 }

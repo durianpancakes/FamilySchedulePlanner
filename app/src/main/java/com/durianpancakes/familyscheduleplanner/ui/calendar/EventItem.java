@@ -2,6 +2,7 @@ package com.durianpancakes.familyscheduleplanner.ui.calendar;
 
 import com.alamkanak.weekview.WeekViewDisplayable;
 import com.alamkanak.weekview.WeekViewEvent;
+import com.google.firebase.database.Exclude;
 
 import java.util.Calendar;
 
@@ -12,6 +13,24 @@ public class EventItem implements WeekViewDisplayable<EventItem> {
     private Calendar endTime;
     private String location; // Used to contain ownerId due to API limitation
     private int color;
+
+    public EventItem(String title, Calendar startTime, Calendar endTime) {
+        this.title = title;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    public EventItem() {
+
+    }
+
+    public EventItem(int id, String title, Calendar startTime, Calendar endTime, String owner) {
+        this.id = id;
+        this.title = title;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.location = owner;
+    }
 
     public int getId() {
         return id;
@@ -29,7 +48,12 @@ public class EventItem implements WeekViewDisplayable<EventItem> {
         this.title = title;
     }
 
-    public Calendar getStartTime() {
+    public String getStartTime() {
+        return startTime.getTime().toString();
+    }
+
+    @Exclude
+    public Calendar getStartTimeCalendar() {
         return startTime;
     }
 
@@ -37,7 +61,12 @@ public class EventItem implements WeekViewDisplayable<EventItem> {
         this.startTime = startTime;
     }
 
-    public Calendar getEndTime() {
+    public String getEndTime() {
+        return endTime.getTime().toString();
+    }
+
+    @Exclude
+    public Calendar getEndTimeCalendar() {
         return endTime;
     }
 

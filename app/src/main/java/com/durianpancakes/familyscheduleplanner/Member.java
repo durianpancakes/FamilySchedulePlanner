@@ -5,13 +5,32 @@ import androidx.annotation.NonNull;
 public class Member {
     private String id;
     private String name;
+    private String email;
+    private boolean isMember;
 
     public Member() {
     }
 
-    public Member(String id, String name) {
+    public Member(String id, String name, String email) {
         this.id = id;
         this.name = name;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isMember() {
+        return isMember;
+    }
+
+    public void setMember(boolean member) {
+        isMember = member;
     }
 
     public String getId() {

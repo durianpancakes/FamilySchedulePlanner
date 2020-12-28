@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/group_navigation"
-    app:startDestination="@id/calendarFragment">
+    app:startDestination="@id/navigation_calendar">
 
     <fragment
-        android:id="@+id/calendarFragment"
+        android:id="@+id/navigation_calendar"
         android:name="com.durianpancakes.familyscheduleplanner.ui.calendar.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar">
@@ -14,13 +14,13 @@
             app:argType="string"/>
     </fragment>
     <fragment
-        android:id="@+id/dashboardFragment"
-        android:name="com.durianpancakes.familyscheduleplanner.ui.dashboard.DashboardFragment"
+        android:id="@+id/navigation_packages"
+        android:name="com.durianpancakes.familyscheduleplanner.ui.tracking.TrackingFragment"
         android:label="fragment_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_tracking" />
     <fragment
-        android:id="@+id/notificationsFragment"
-        android:name="com.durianpancakes.familyscheduleplanner.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_settings"
+        android:name="com.durianpancakes.familyscheduleplanner.ui.settings.GroupSettingsFragment"
         android:label="fragment_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_group_settings" />
 </navigation>

@@ -20,6 +20,14 @@ public class Group {
     public Group() {
     }
 
+    public void addMember(Member member) {
+        members.add(member);
+    }
+
+    public boolean removeMember(Member member) {
+        return members.remove(member);
+    }
+
     public String getAdminId() {
         return adminId;
     }
@@ -29,7 +37,7 @@ public class Group {
     }
 
     public long getNumMembers() {
-        return numMembers;
+        return members.size();
     }
 
     public void setNumMembers(int numMembers) {

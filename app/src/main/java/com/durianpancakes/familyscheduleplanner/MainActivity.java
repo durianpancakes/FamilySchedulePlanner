@@ -35,7 +35,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnHomeGroupItemClickListener {
+public class MainActivity extends AppCompatActivity {
     public static final int RC_SIGN_IN = 1231;
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -57,15 +57,6 @@ public class MainActivity extends AppCompatActivity implements OnHomeGroupItemCl
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         bindUiItems();
         // Passing each menu ID as a set of Ids because each
@@ -198,10 +189,5 @@ public class MainActivity extends AppCompatActivity implements OnHomeGroupItemCl
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    @Override
-    public void onClick(Group group) {
-
     }
 }

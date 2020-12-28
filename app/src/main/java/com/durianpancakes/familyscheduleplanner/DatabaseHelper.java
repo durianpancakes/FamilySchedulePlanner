@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 
 import com.durianpancakes.familyscheduleplanner.ui.calendar.CalendarFragment;
 import com.durianpancakes.familyscheduleplanner.ui.calendar.EventItem;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +38,61 @@ public class DatabaseHelper {
     public void addUser(String uid, User user) {
         DatabaseReference usersRef = ref.child("users");
         usersRef.child(uid).setValue(user);
+    }
+
+    public void addEvent(int eventId, String groupId, EventItem event) {
+        DatabaseReference eventsRef = ref.child("groupEvents");
+        event.setId(eventId);
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        event.setLocation(firebaseUser.getDisplayName());
+        eventsRef.child(groupId).child(String.valueOf(eventId)).setValue(event);
+    }
+
+    public void addGroup(String groupTitle) {
+        Group group = updateGroupNode(groupTitle);
+        updateUserNode(group);
+    }
+
+    public void addMemberToGroup(String uid, String groupId) {
+
+    }
+
+    private Group updateGroupNode(String groupTitle) {
+        DatabaseReference groupsRef = ref.child("groups");
+        DatabaseReference newGroupRef = groupsRef.push();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        Group group = new Group();
+        Member member = new Member(firebaseUser.getUid(), firebaseUser.getDisplayName(),
+                firebaseUser.getEmail());
+        member.setMember(true);
+        ArrayList<Member> members = new ArrayList<>();
+        members.add(member);
+        group.setGroupTitle(groupTitle);
+        group.setMembers(members);
+        group.setAdminId(firebaseUser.getUid());
+        group.setId(newGroupRef.getKey());
+        newGroupRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("DatabaseHelper", "addGroup successful");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        newGroupRef.setValue(group);
+
+        return group;
+    }
+
+    private void updateUserNode(Group group) {
+        DatabaseReference usersRef = ref.child("users");
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = usersRef.child(firebaseUser.getUid());
+        DatabaseReference groupRef = userRef.child("groups").child(group.getId());
+        groupRef.setValue(group);
     }
 
     public void getUsers() {
@@ -128,7 +185,7 @@ public class DatabaseHelper {
     }
 
     private EventItem processEventData(DataSnapshot snapshot) throws ParseException {
-        EventItem eventItem  = new EventItem();
+        EventItem eventItem = new EventItem();
 
         for (DataSnapshot ds : snapshot.getChildren()) {
             String key = ds.getKey();
@@ -144,11 +201,11 @@ public class DatabaseHelper {
                     break;
                 case "startTime":
                     String startTime = ds.getValue(String.class);
-                    eventItem.setStartTime(parseCalendarFromString(startTime));
+                    eventItem.setStartTime(CalendarParser.parseCalendarFromString(startTime));
                     break;
                 case "endTime":
                     String endTime = ds.getValue(String.class);
-                    eventItem.setEndTime(parseCalendarFromString(endTime));
+                    eventItem.setEndTime(CalendarParser.parseCalendarFromString(endTime));
                     break;
                 case "location":
                     // This field contains the ownerId instead of location
@@ -161,14 +218,5 @@ public class DatabaseHelper {
         }
 
         return eventItem;
-    }
-
-    private Calendar parseCalendarFromString(String calString) throws ParseException {
-        Calendar cal = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy",
-                Locale.getDefault());
-        cal.setTime(sdf.parse(calString));
-
-        return cal;
     }
 }
